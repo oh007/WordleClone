@@ -1,0 +1,47 @@
+.word-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.word-row {
+  display: flex;
+  gap: 8px;
+}
+
+.word-cell {
+  width: 50px;
+  height: 50px;
+  font-size: 1.5em;
+  border: 2px solid #d3d6da;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+}
+
+.word-cell.correct {
+  background-color: #6aaa64;
+  color: white;
+  border-color: #6aaa64;
+}
+
+.word-cell.yellow {
+  background-color: #c9b458;
+  color: white;
+  border-color: #c9b458;
+}
+
+.word-cell.gray {
+  background-color: #787c7e;
+  color: white;
+  border-color: #787c7e;
+}
+@media (max-width: 480px) {
+  .word-cell {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2em;
+  }
+}

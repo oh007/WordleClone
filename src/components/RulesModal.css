@@ -1,0 +1,88 @@
+.rules-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.rules-modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  text-align: center;
+}
+
+.rules-modal h2 {
+  margin-bottom: 20px;
+}
+
+.rules-modal p {
+  margin-bottom: 10px;
+}
+.example-box {
+  margin: 30px;
+}
+.example {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.word-cell {
+  width: 40px;
+  height: 40px;
+  border: 2px solid #d3d6da;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5em;
+  text-transform: uppercase;
+  margin: 2px;
+}
+
+.word-cell.correct {
+  background-color: #6aaa64;
+  color: white;
+  border-color: #6aaa64;
+}
+
+.word-cell.yellow {
+  background-color: #c9b458;
+  color: white;
+  border-color: #c9b458;
+}
+
+.word-cell.gray {
+  background-color: #787c7e;
+  color: white;
+  border-color: #787c7e;
+}
+
+.rules-modal button {
+  padding: 10px 20px;
+  background-color: #4285f4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+}
+
+.rules-modal button:hover {
+  background-color: #1967d2;
+}
+
+.rules-modal hr {
+  border: 1px solidrgb(221, 221, 221);
+  width: 30%;
+  margin: 0 auto;
+}
