@@ -1,22 +1,23 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect, useImperativeHandle, forwardRef } from "react";
 import WordGrid from "./WordGrid";
 import Keyboard from "./Keyboard";
-import RulesModal from "./RulesModal"; 
-import WinModal from "./Winmodal";
+import RulesModal from "./RulesModal";
+import WinModal from "./WinModal";
 import confetti from "canvas-confetti";
 import "./Wordle.css";
 
 interface WordleProps {
-    wordList?: string[]; 
-  }
-  const Wordle: React.FC<WordleProps> = ({ wordList })  => {
+  wordList?: string[];
+}
+
+const Wordle = forwardRef<unknown, WordleProps>(({ wordList }, ref) => {
   const [correctWord, setCorrectWord] = useState<string>("");
   const [currentGuess, setCurrentGuess] = useState<string>("");
   const [guesses, setGuesses] = useState<string[]>([]);
   const [gameOver, setGameOver] = useState<boolean>(false);
   const [showRules, setShowRules] = useState(true);
   const [winAudio, setWinAudio] = useState<HTMLAudioElement | null>(null);
-  const [showWinModal, setShowWinModal] = useState(false); 
+  const [showWinModal, setShowWinModal] = useState(false);
 
   useEffect(() => {
     const hasShownRules = localStorage.getItem("hasShownRules");
@@ -41,12 +42,12 @@ interface WordleProps {
   }, [wordList]);
 
   useEffect(() => {
-    const newAudio = new Audio("/winsound.mp3"); 
+    const newAudio = new Audio("/winsound.mp3");
     setWinAudio(newAudio);
-  },[]);
+  }, []);
 
   const handleOpenRules = () => {
-    setShowRules(true); 
+    setShowRules(true);
   };
 
   const handleCloseRules = () => {
@@ -68,7 +69,7 @@ interface WordleProps {
         if (winAudio) {
           winAudio.play();
         }
-        confetti({ 
+        confetti({
           particleCount: 100,
           spread: 70,
           origin: { y: 0.6 },
@@ -101,12 +102,16 @@ interface WordleProps {
     return result;
   };
 
+  useImperativeHandle(ref, () => ({
+    getGuessStatus,
+  }));
+
   const handleDeletePress = () => {
     setCurrentGuess((prevGuess) => prevGuess.slice(0, -1));
   };
 
   const handlePlayAgain = () => {
-    fetch("/data/words.txt") 
+    fetch("/data/words.txt")
       .then((response) => response.text())
       .then((text) => {
         const words = text.split("\n").map((word) => word.trim());
@@ -117,15 +122,20 @@ interface WordleProps {
         setShowWinModal(false);
       });
   };
+
   return (
     <div className="wordle-container">
       <h1>WORDLE</h1>
-      <button className="rules-button" onClick={handleOpenRules}>?</button> 
+      <button className="rules-button" onClick={handleOpenRules}>
+        ?
+      </button>
       <WordGrid
         guesses={guesses}
         getGuessStatus={getGuessStatus}
         currentGuess={currentGuess}
       />
+      <div data-testid="currentGuess">{currentGuess}</div>
+      <div data-testid="guesses">{guesses.join(",")}</div>
       <Keyboard
         onKeyPress={handleKeyPress}
         currentGuess={currentGuess}
@@ -136,6 +146,6 @@ interface WordleProps {
       {showWinModal && <WinModal onClose={handlePlayAgain} />}
     </div>
   );
-};
+});
 
 export default Wordle;

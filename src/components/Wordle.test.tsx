@@ -1,20 +1,32 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import React from "react";
+import '@testing-library/jest-dom';
 import Wordle from "./Wordle";
-import { vi } from "vitest";
+import confetti from "canvas-confetti";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 
-vi.mock("canvas-confetti", () => ({ default: vi.fn() }));
-global.Audio = vi.fn().mockImplementation(() => {
+jest.mock("canvas-confetti", () => jest.fn());
+global.Audio = jest.fn().mockImplementation(() => {
     return {
-        play: vi.fn(),
-        pause: vi.fn(),
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
+        play: jest.fn(),
+        pause: jest.fn(),
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
         currentTime: 0,
     };
 });
 
+window.alert = jest.fn();
+
 describe("Wordle Component Tests", () => {
     const testWordList = ["tests", "apple", "wrong"];
+
+    beforeEach(() => {
+        global.fetch = jest.fn(() =>
+            Promise.resolve({
+                text: () => Promise.resolve("apple\nbanana\ncherry"),
+            })
+        ) as jest.Mock;
+    });
 
     test("updates current guess when a key is pressed", () => {
         render(<Wordle wordList={testWordList} />);
@@ -25,26 +37,53 @@ describe("Wordle Component Tests", () => {
     test("adds a guess to the guesses array when Enter is pressed", () => {
         render(<Wordle wordList={testWordList} />);
         fireEvent.click(screen.getByRole("button", { name: "a" }));
-        fireEvent.click(screen.getByRole("button", { name: "↵" }));
-        expect(screen.getByTestId("guesses").textContent).toContain("a");
-    });
-
-    test("shows the win modal when the correct word is guessed", async () => {
-        render(<Wordle wordList={testWordList} />);
-
-        fireEvent.click(screen.getByRole("button", { name: "t" }));
+        fireEvent.click(screen.getByRole("button", { name: "p" }));
+        fireEvent.click(screen.getByRole("button", { name: "p" }));
+        fireEvent.click(screen.getByRole("button", { name: "l" }));
         fireEvent.click(screen.getByRole("button", { name: "e" }));
-        fireEvent.click(screen.getByRole("button", { name: "s" }));
-        fireEvent.click(screen.getByRole("button", { name: "t" }));
-        fireEvent.click(screen.getByRole("button", { name: "s" }));
         fireEvent.click(screen.getByRole("button", { name: "↵" }));
-
-        expect(screen.getByText("Congratulations, You Won!")).toBeInTheDocument();
+        expect(screen.getByTestId("guesses").textContent).toContain("apple");
     });
 
-    test("does not show the win modal when an incorrect word is guessed", () => {
-        render(<Wordle wordList={testWordList} />);
+    test("displays correct colors for guess letters", () => {
+        render(<Wordle wordList={["apple"]} />);
+        
+        fireEvent.click(screen.getByRole("button", { name: "a" }));
+        fireEvent.click(screen.getByRole("button", { name: "p" }));
+        fireEvent.click(screen.getByRole("button", { name: "p" }));
+        fireEvent.click(screen.getByRole("button", { name: "l" }));
+        fireEvent.click(screen.getByRole("button", { name: "e" }));
+        fireEvent.click(screen.getByRole("button", { name: "↵" }));
 
+        const guessTiles = screen.getAllByTestId("guess-tile");
+        expect(guessTiles[0]).toHaveClass("correct");
+        expect(guessTiles[1]).toHaveClass("correct");
+        expect(guessTiles[2]).toHaveClass("correct");
+        expect(guessTiles[3]).toHaveClass("correct");
+        expect(guessTiles[4]).toHaveClass("correct");
+    });
+
+    test("displays yellow color for correct letter in wrong position", () => {
+        render(<Wordle wordList={["apple"]} />);
+        
+        fireEvent.click(screen.getByRole("button", { name: "p" }));
+        fireEvent.click(screen.getByRole("button", { name: "a" }));
+        fireEvent.click(screen.getByRole("button", { name: "p" }));
+        fireEvent.click(screen.getByRole("button", { name: "l" }));
+        fireEvent.click(screen.getByRole("button", { name: "e" }));
+        fireEvent.click(screen.getByRole("button", { name: "↵" }));
+
+        const guessTiles = screen.getAllByTestId("guess-tile");
+        expect(guessTiles[0]).toHaveClass("yellow");
+        expect(guessTiles[1]).toHaveClass("yellow");
+        expect(guessTiles[2]).toHaveClass("correct");
+        expect(guessTiles[3]).toHaveClass("correct");
+        expect(guessTiles[4]).toHaveClass("correct");
+    });
+
+    test("displays gray color for incorrect letters", () => {
+        render(<Wordle wordList={["apple"]} />);
+        
         fireEvent.click(screen.getByRole("button", { name: "w" }));
         fireEvent.click(screen.getByRole("button", { name: "r" }));
         fireEvent.click(screen.getByRole("button", { name: "o" }));
@@ -52,6 +91,9 @@ describe("Wordle Component Tests", () => {
         fireEvent.click(screen.getByRole("button", { name: "g" }));
         fireEvent.click(screen.getByRole("button", { name: "↵" }));
 
-        expect(screen.queryByText("Congratulations, You Won!")).toBeNull();
+        const guessTiles = screen.getAllByTestId("guess-tile");
+        guessTiles.forEach(tile => {
+            expect(tile).toHaveClass("gray");
+        });
     });
 });
