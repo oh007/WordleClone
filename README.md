@@ -1,7 +1,7 @@
 # Wordle Clone
 
 
-![Guesses-green](https://github.com/user-attachments/assets/36f20049-3ed1-47a0-b276-8be4654b17d7) ![popup-screen](https://github.com/user-attachments/assets/683a3f37-1f56-4ec6-95e8-71ec321d54e3) ![won](https://github.com/user-attachments/assets/b7fecc43-dd66-46be-b9e4-b39423645d3a)
+![Guesses-green](https://github.com/user-attachments/assets/36f20049-3ed1-47a0-b276-8be4654b17d7) ![won](https://github.com/user-attachments/assets/b7fecc43-dd66-46be-b9e4-b39423645d3a)  ![popup-screen](https://github.com/user-attachments/assets/683a3f37-1f56-4ec6-95e8-71ec321d54e3)
 
 
 A Wordle-inspired game built with React and TypeScript.
