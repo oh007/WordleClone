@@ -134,8 +134,7 @@ const Wordle = forwardRef<unknown, WordleProps>(({ wordList }, ref) => {
         getGuessStatus={getGuessStatus}
         currentGuess={currentGuess}
       />
-      <div data-testid="currentGuess">{currentGuess}</div>
-      <div data-testid="guesses">{guesses.join(",")}</div>
+      {/* <div data-testid="currentGuess">{currentGuess}</div> */}
       <Keyboard
         onKeyPress={handleKeyPress}
         currentGuess={currentGuess}

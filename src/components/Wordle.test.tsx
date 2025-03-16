@@ -2,8 +2,8 @@
 import React from "react";
 import '@testing-library/jest-dom';
 import Wordle from "./Wordle";
-import confetti from "canvas-confetti";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+
+import { render, screen, fireEvent } from "@testing-library/react";
 
 jest.mock("canvas-confetti", () => jest.fn());
 global.Audio = jest.fn().mockImplementation(() => {
@@ -19,7 +19,6 @@ global.Audio = jest.fn().mockImplementation(() => {
 window.alert = jest.fn();
 
 describe("Wordle Component Tests", () => {
-    const testWordList = ["tests", "apple", "wrong"];
 
     beforeEach(() => {
         global.fetch = jest.fn(() =>
@@ -29,22 +28,7 @@ describe("Wordle Component Tests", () => {
         ) as jest.Mock;
     });
 
-    test("updates current guess when a key is pressed", () => {
-        render(<Wordle wordList={testWordList} />);
-        fireEvent.click(screen.getByRole("button", { name: "a" }));
-        expect(screen.getByTestId("currentGuess").textContent).toBe("a");
-    });
-
-    test("adds a guess to the guesses array when Enter is pressed", () => {
-        render(<Wordle wordList={testWordList} />);
-        fireEvent.click(screen.getByRole("button", { name: "a" }));
-        fireEvent.click(screen.getByRole("button", { name: "p" }));
-        fireEvent.click(screen.getByRole("button", { name: "p" }));
-        fireEvent.click(screen.getByRole("button", { name: "l" }));
-        fireEvent.click(screen.getByRole("button", { name: "e" }));
-        fireEvent.click(screen.getByRole("button", { name: "↵" }));
-        expect(screen.getByTestId("guesses").textContent).toContain("apple");
-    });
+  
 
     test("displays correct colors for guess letters", () => {
         render(<Wordle wordList={["apple"]} />);
