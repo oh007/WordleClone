@@ -1,5 +1,9 @@
 # Wordle Clone
 
+
+![Guesses-green](https://github.com/user-attachments/assets/36f20049-3ed1-47a0-b276-8be4654b17d7)
+
+
 A Wordle-inspired game built with React and TypeScript.
 
 ## Features
@@ -50,3 +54,8 @@ Please make sure to update tests as appropriate.
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
+## Gallery
+![won](https://github.com/user-attachments/assets/c84361de-30f8-4e96-a1bd-ef5569d46fb4) (Winning screen)
+![popup-screen](https://github.com/user-attachments/assets/1736ded3-c7b9-4ca2-8592-a1cae3be8273) (How to play popup)
+
