@@ -29,7 +29,7 @@ A Wordle-inspired game built with React and TypeScript.
 Clone the repository and install dependencies:
 ```bash
 git clone https://github.com/oh007/WordleClone.git
-cd wordle-clone
+cd WordleClone
 npm install
 ```
 
